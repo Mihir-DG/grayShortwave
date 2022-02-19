@@ -176,12 +176,11 @@ surfaceAlbedo = 0.3
 airPressure = tp_profiles['air_pressure'][:, np.newaxis, np.newaxis]
 ozone_moleFrac = mol_profiles['ozone'][:, np.newaxis, np.newaxis]
 
-"""plotting_test_145(test4, ozone_moleFrac)
+plotting_test_145(test4, ozone_moleFrac)
 plotting_test_23(test2, ozone_moleFrac)
 plotting_test_23(test3, ozone_moleFrac)
-plotting_test_145(test1, ozone_moleFrac)"""
+plotting_test_145(test1, ozone_moleFrac)
 plotting_test_145(test5, ozone_moleFrac)
 
 
-# Consider top few layers --> stick ozone there
 # Instellation --> zenith angle (S cos theta)
