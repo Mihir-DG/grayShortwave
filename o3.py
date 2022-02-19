@@ -1,7 +1,21 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-attenuationCoefficient = 0.7
+""" Input quantities:
+1. Solar constant
+2. Zenith angle
+3. Air Pressure
+4. Ozone distribution (mole frac)
+
+
+- ozone_moleFrac shape - (60,1,1)
+- dI/dP = coefficient * o3
+- ozone_moleFrac to be replaced with climt.init_ozone output (from initialization.py)
+- downward integration is input to upward integration
+
+"""
+
+# Test 1: No absorption
 
 def test1(ozone_moleFrac):
 	ozone_moleFrac[:] = 0.
@@ -14,7 +28,7 @@ def test2(m, ozone_moleFrac):
 	test2 = np.empty(ozone_moleFrac.shape)
 	test2[0] = ozone_moleFrac[0]
 	for elem in range(1,60):
-		test2[elem] = test2[elem-1]*(1 + 0.01 * m)
+		test2[elem] = test2[elem-1]*(1 + (0.01 * m))
 	ozone_moleFrac = test2
 	return ozone_moleFrac
 
@@ -25,7 +39,7 @@ def test3(m, ozone_moleFrac):
 	test3 = np.empty(ozone_moleFrac.shape)
 	test3[0] = ozone_moleFrac[0]
 	for elem in range(1,60):
-		test3[elem] = test3[elem-1]*(1 - 0.01 * m)
+		test3[elem] = test3[elem-1]*(1 - (0.01 * m))
 	ozone_moleFrac = test3
 	return ozone_moleFrac
 
@@ -139,8 +153,21 @@ def plotting_test_14(test, ozone_moleFrac):
 	plt.savefig("graphs/" + test.__name__ + "/upFlux.png")
 
 
+solarConstant = 1360
+
+mol_profiles = np.load('molecule_profiles.npz')
+tp_profiles = np.load('thermodynamic_profiles.npz')
+
+attenuationCoefficient = 0.6
+surfaceAlbedo = 0.3
+airPressure = tp_profiles['air_pressure'][:, np.newaxis, np.newaxis]
+ozone_moleFrac = mol_profiles['ozone'][:, np.newaxis, np.newaxis]
 
 plotting_test_14(test4, ozone_moleFrac)
 plotting_test_23(test2, ozone_moleFrac)
 plotting_test_23(test3, ozone_moleFrac)
 plotting_test_14(test1, ozone_moleFrac)
+
+
+# Consider top few layers --> stick ozone there
+# Instellation --> zenith angle (S cos theta)
