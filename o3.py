@@ -50,6 +50,19 @@ def test4(ozone_moleFrac):
 	ozone_moleFrac[:] = ozone_moleFrac[0]
 	return ozone_moleFrac
 
+
+# Test 5: Absorption at specific heights
+
+def test5(ozone_moleFrac):
+	meanOzone = np.mean(ozone_moleFrac)
+	print(meanOzone)
+	ozone_moleFrac[:] = 0.
+	ozone_moleFrac[30] = meanOzone
+	ozone_moleFrac[15] = meanOzone
+	ozone_moleFrac[40] = meanOzone
+	return ozone_moleFrac
+
+
 def integrate_shortwave_downward(ozone_moleFrac):
 	I = np.empty(ozone_moleFrac.shape)
 	I[-1][:] = solarConstant
@@ -122,8 +135,8 @@ def plotting_test_23(test, ozone_moleFrac):
 	plt.savefig("graphs/" + test.__name__ + "/upFlux.png")
 
 
-# FOR TESTS 1 and 4 - 
-def plotting_test_14(test, ozone_moleFrac):
+# FOR TESTS 1, 4, 5 - 
+def plotting_test_145(test, ozone_moleFrac):
 	ozone_moleFrac = test(ozone_moleFrac)
 	downFlux, upFlux, netFlux = main(ozone_moleFrac)
 
@@ -163,10 +176,11 @@ surfaceAlbedo = 0.3
 airPressure = tp_profiles['air_pressure'][:, np.newaxis, np.newaxis]
 ozone_moleFrac = mol_profiles['ozone'][:, np.newaxis, np.newaxis]
 
-plotting_test_14(test4, ozone_moleFrac)
+"""plotting_test_145(test4, ozone_moleFrac)
 plotting_test_23(test2, ozone_moleFrac)
 plotting_test_23(test3, ozone_moleFrac)
-plotting_test_14(test1, ozone_moleFrac)
+plotting_test_145(test1, ozone_moleFrac)"""
+plotting_test_145(test5, ozone_moleFrac)
 
 
 # Consider top few layers --> stick ozone there
